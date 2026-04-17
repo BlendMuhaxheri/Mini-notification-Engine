@@ -19,54 +19,7 @@
     <div class="flex min-h-screen">
 
         {{-- SIDEBAR --}}
-        <aside class="w-72 bg-slate-900 text-white flex flex-col">
-
-            {{-- LOGO --}}
-            <div class="h-16 flex items-center px-6 border-b border-slate-800 font-bold text-lg">
-                Smart Notify
-            </div>
-
-            {{-- NAVIGATION --}}
-            <nav class="flex-1 px-4 py-6 space-y-2">
-
-                <a href="{{ route('dashboard') }}"
-                    class="block px-4 py-3 rounded-lg hover:bg-slate-800 transition">
-                    Dashboard
-                </a>
-
-                <a href="{{ route('rules.index') }}"
-                    class="block px-4 py-3 rounded-lg hover:bg-slate-800 transition">
-                    Notification Rules
-                </a>
-
-                <a href="#"
-                    class="block px-4 py-3 rounded-lg hover:bg-slate-800 transition">
-                    Notifications
-                </a>
-
-                <a href="#"
-                    class="block px-4 py-3 rounded-lg hover:bg-slate-800 transition">
-                    Users
-                </a>
-
-                <a href="#"
-                    class="block px-4 py-3 rounded-lg hover:bg-slate-800 transition">
-                    Reports
-                </a>
-
-                <a href="#"
-                    class="block px-4 py-3 rounded-lg hover:bg-slate-800 transition">
-                    Settings
-                </a>
-
-            </nav>
-
-            {{-- FOOTER --}}
-            <div class="p-4 border-t border-slate-800 text-sm text-slate-400">
-                v1.0
-            </div>
-
-        </aside>
+        <x-layout.sidebar />
 
         {{-- MAIN CONTENT --}}
         <div class="flex-1 flex flex-col">

@@ -4,30 +4,32 @@
 
         <h1 class="text-3xl font-bold">Dashboard Overview</h1>
 
+        {{-- STATS --}}
         <div class="grid md:grid-cols-4 gap-6">
 
             <div class="bg-white p-6 rounded-xl shadow border">
                 <p class="text-slate-500">Total Rules</p>
-                <h2 class="text-3xl font-bold">12</h2>
+                <h2 class="text-3xl font-bold">{{ $totalRules }}</h2>
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow border">
                 <p class="text-slate-500">Notifications Sent</p>
-                <h2 class="text-3xl font-bold">248</h2>
+                <h2 class="text-3xl font-bold">{{ $totalNotifications }}</h2>
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow border">
                 <p class="text-slate-500">Users</p>
-                <h2 class="text-3xl font-bold">3567</h2>
+                <h2 class="text-3xl font-bold">{{ $totalUsers }}</h2>
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow border">
                 <p class="text-slate-500">Active Users</p>
-                <h2 class="text-3xl font-bold">1234</h2>
+                <h2 class="text-3xl font-bold">8</h2>
             </div>
 
         </div>
 
+        {{-- ACTION CARDS --}}
         <div class="grid md:grid-cols-2 gap-6">
 
             <div class="bg-white p-6 rounded-xl shadow border">
@@ -49,7 +51,7 @@
                 <form action="{{ route('rules.import') }}" method="POST" class="mt-4">
                     @csrf
 
-                    <x-form.button type='submit' variant="success">
+                    <x-form.button type="submit" variant="success">
                         Start Import
                     </x-form.button>
                 </form>

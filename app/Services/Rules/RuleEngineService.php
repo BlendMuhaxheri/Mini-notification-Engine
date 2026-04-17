@@ -7,6 +7,8 @@ use App\Models\Rule;
 use App\Models\UserAction;
 use App\Notifications\NotifyUser;
 
+use function Illuminate\Support\now;
+
 class RuleEngineService
 {
     public function process(UserAction $userAction)
@@ -15,27 +17,50 @@ class RuleEngineService
             ->where('type', $userAction->action_type)
             ->get();
 
+        $winnerRule = null;
+        $bestScore  = 0;
+
         foreach ($rules as $rule) {
-            if (!$userAction->action_type == $rule->type) {
-                continue;
+            $score = $this->findRuleWithMostMatches($rule, $userAction);
+
+            if ($score > $bestScore) {
+                $bestScore  = $score;
+                $winnerRule = $rule;
             }
+        }
 
-            foreach ($rule->conditions as $condition) {
-                $operator = ConditionOperator::from($condition->operator);
+        if ($winnerRule && $bestScore > 0) {
+            $userAction->user->notify(new NotifyUser($winnerRule));
 
-                $isMatch = $operator->matches(
-                    $userAction->payload[$condition->field] ?? null,
-                    $condition->value
-                );
+            $userAction->user
+                ->notificationsSent()
+                ->create([
+                    'user_id' => $userAction->user,
+                    'rule_id' => $winnerRule->id,
+                    'message' => $winnerRule->notification_text,
+                    'type'    => $winnerRule->type,
+                    'sent_at' => now()
+                ]);
+        }
+    }
 
-                if ($isMatch) {
-                    $userAction->user->notify(
-                        (new NotifyUser($rule))
-                    );
+    public function findRuleWithMostMatches($rule, UserAction $userAction): int
+    {
+        $score = 0;
 
-                    break;
+        foreach ($rule->conditions as $condition) {
+            $operator  = ConditionOperator::from($condition->operator);
+            $userValue = $userAction->payload[$condition->field] ?? null;
+
+            $conditionVals = explode(',', $condition->value);
+
+            foreach ($conditionVals as $val) {
+                if ($operator->matches($userValue, trim($val))) {
+                    $score++;
                 }
             }
         }
+
+        return $score;
     }
 }

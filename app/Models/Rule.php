@@ -17,4 +17,9 @@ class Rule extends Model
     {
         return $this->hasMany(Condition::class);
     }
+
+    public function notificationsSent(): HasMany
+    {
+        return $this->hasMany(NotificationSent::class);
+    }
 }

@@ -11,42 +11,44 @@
                 <thead class="bg-slate-50">
                     <tr>
                         <th class="px-6 py-4 text-left">User</th>
-                        <th class="text-left">Rule</th>
-                        <th class="text-left">Message</th>
-                        <th class="text-left">Sent At</th>
+                        <th class="text-left">Action Type</th>
+                        <th class="text-left">Payload</th>
+                        <th class="text-left">Created At</th>
                     </tr>
                 </thead>
 
                 <tbody class="divide-y">
-                    @forelse ($notifications as $notification)
+                    @forelse ($actions as $action)
                     <tr>
                         <td class="px-6 py-4">
-                            {{ $notification->user->email ?? 'N/A' }}
+                            {{ $action->user->email ?? 'N/A' }}
                         </td>
 
                         <td>
-                            {{ $notification->rule->name ?? $notification->rule_id }}
+                            {{ $action->action_type }}
                         </td>
 
                         <td>
-                            {{ $notification->message }}
+                            <pre class="text-sm">{{ json_encode($action->payload, JSON_PRETTY_PRINT) }}</pre>
                         </td>
 
                         <td>
-                            {{ $notification->sent_at }}
+                            {{ $action->created_at }}
                         </td>
                     </tr>
                     @empty
                     <tr>
                         <td colspan="4" class="px-6 py-4 text-center text-gray-500">
-                            No notifications found.
+                            No actions found.
                         </td>
                     </tr>
                     @endforelse
                 </tbody>
-
             </table>
 
+            <div class="p-4">
+                {{ $actions->links() }}
+            </div>
         </div>
 
     </div>

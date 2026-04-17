@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\Rules\RuleController;
+use App\Http\Controllers\Admin\User\UserController;
+use App\Http\Controllers\Admin\UserActions\ActionController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Notification\NotificationSentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\UserActionController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +34,15 @@ Route::middleware('auth')->group(function () {
             ->name('rules.export');
 
         Route::resource('rules', RuleController::class);
+
+        Route::get('/notifications-sent', [NotificationSentController::class, 'index'])
+            ->name('notifications-sent');
+
+        Route::get('/user-actions', [ActionController::class, 'index'])
+            ->name('user-actions');
+
+        Route::get('/users', [UserController::class, 'index'])
+            ->name('users');
     });
 });
 
